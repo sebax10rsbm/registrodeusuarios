@@ -1,0 +1,16 @@
+html{
+    background-color: azure;
+}
+
+btn{
+    float: left;
+    margin: 2px;
+}
+
+.titulo{
+    text-align: center;
+}
+
+table{
+    width: 100%;
+}
