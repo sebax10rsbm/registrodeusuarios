@@ -1,16 +1,15 @@
-html{
-    background-color: azure;
+nav{
+    background-color: #558b2f;
 }
-
-btn{
-    float: left;
-    margin: 2px;
+.footer{
+    background-color: #558b2f;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
-
-.titulo{
-    text-align: center;
-}
-
-table{
+.footer2{
+    background-color: #558b2f;
+    position: relative;
+    bottom: 0;
     width: 100%;
 }

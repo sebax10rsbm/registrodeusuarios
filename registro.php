@@ -1,91 +1,115 @@
 <?php
-    include('usuarios.php');
-    $usuario = new usuarios;
-    if (isset($_POST['registrar'])){
-        $request = array(
-            "identificacion" => $_POST['identificacion'],
-            "apellidos" => $_POST['apellidos'],
-            "nombres" => $_POST['nombres'],
-            "fecha_nacimiento" => $_POST['fecha_nacimiento'],
-            "direccion" => $_POST['direccion'],
-            "telefono" => $_POST['telefono']
-        );
-        if($usuario -> crear_usuario($request)){
-            echo('usuario creado');
-        } else {
-            echo('error de creacion');
-        }
+  require('tools/db.php');
+  require('tools/functions.php');
+  
+  if(isset($_POST['btnEnviar'])){
+    $nombre = limpiarCadena($_POST['txtNombre']);
+    $apellido = limpiarCadena($_POST['txtApellido']);
+    $numeroIdentificacion = limpiarCadena($_POST['txtNumeroIdentificacion']);
+    $telefono = limpiarCadena($_POST['txtTelefono']);
+    $correoElectronico = limpiarCadena($_POST['txtCorreoElectronico']);
+    $direccion = limpiarCadena($_POST['txtDireccion']);
+    $usuario = limpiarCadena($_POST['txtUsuario']);
+    $clave = md5(limpiarCadena($_POST['txtClave']));
+    if (registrarUsuario(
+      $nombre,$apellido,$numeroIdentificacion,$telefono,$correoElectronico,
+      $direccion,$usuario,$clave
+    )) {
+      echo(alertJs('Usuario creado Correctamente'));
+    } else {
+      echo(alertJs('No es posible crear el usuario'));
     }
+    
+  }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <link rel="stylesheet" href="main.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="main.css">
+  <title>Document</title>
 </head>
 <body>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Logo</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="index.php">Regresar</a></li>
+        <li><a href="login.php">Iniciar</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <form action="" method="POST">
+      <table>
+        <tr>
+          <td>Nombres</td>
+          <td><input type="text" name="txtNombre"></td>
+        </tr>
+        <tr>
+          <td>Apellidos</td>
+          <td><input type="text" name="txtApellido"></td>
+        </tr>
+        <tr>
+          <td>Numero identificacion</td>
+          <td><input type="text" name="txtNumeroIdentificacion"></td>
+        </tr>
+        <tr>
+          <td>Telefono</td>
+          <td><input type="text" name="txtTelefono"></td>
+        </tr>
+        <tr>
+          <td>Correo electronico</td>
+          <td><input type="text" name="txtCorreoElectronico"></td>
+        </tr>
+        <tr>
+          <td>Direccion</td>
+          <td><input type="text" name="txtDireccion"></td>
+        </tr>
+        <tr>
+          <td>Usuario</td>
+          <td><input type="text" name="txtUsuario"></td>
+        </tr>
+        <tr>
+          <td>Clave</td>
+          <td><input type="password" name="txtClave"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="submit" name="btnEnviar" value="Registrarse"></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <footer class="page-footer footer2">
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <a href="index.html"><img src="logo_princ.jpg" alt="" width="100px"></a>
-            </div>
-            <div class="col"></div>
-            <div class="col"><p class="fs-5 titulo">Sebastian Ballesteros Martinez</p></div>
-            <div class="col"></div>
-            <div class="col" >
-                <a href="registro.php"><button type="button" class="btn btn-secondary">Registro</button></a>
-                <a href="consulta.php"><button type="button" class="btn btn-secondary">Ver usuarios</button></a>
-            </div>
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Cooptenjo</h5>
+          <p class="grey-text text-lighten-4">Entidad cooperativa de ahorro y credito de Tenjo</p>
         </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Redes</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="#!">Facebook</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!">Twitter</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!">Instagram</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!">TikTok</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div class="container">
-        <form action="" method='post'>
-            <table>
-                <tr>
-                    <div class="mb-3">
-                        <td><label for="identificacion" class="form-label">Identificacíon</label></td>
-                        <td><input type="text" class="form-text" name="identificacion"></td>
-                    </div>
-                </tr>
-                <tr>
-                    <div class="mb-3">
-                        <td><label for="apellidos" class="form-label">Apellidos</label></td>
-                        <td><input type="text" class="form-text" name="apellidos"></td>
-                    </div>
-                </tr>
-                <tr>
-                    <div class="mb-3">
-                        <td><label for="nombres" class="form-label">Nombre</label></td>
-                        <td><input type="text" class="form-text" name="nombres"></td>
-                    </div>
-                </tr>
-                <tr>
-                    <div class="mb-3">
-                        <td><label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label></td>
-                        <td><input type="date" class="form-date" name="fecha_nacimiento"></td>
-                    </div>
-                </tr>
-                <tr>
-                    <div class="mb-3">
-                        <td><label for="direccion" class="form-label">Direccion</label></td>
-                        <td><input type="text" class="form-text" name="direccion"></td>
-                    </div>
-                </tr>
-                <tr>
-                    <div class="mb-3">
-                        <td><label for="Telefono" class="form-label">Teléfono</label></td>
-                        <td><input type="text" class="form-text" name="telefono"></td>
-                    </div>
-                </tr>
-                <tr><td></td><td><input type="submit" value="Registrar" name="registrar"></td></tr>
-            </table>
-        </form>
+    <div class="footer-copyright">
+      <div class="container">
+      cooptenjo.com.co
+      </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
